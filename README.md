@@ -1,3 +1,6 @@
+Last update 2013.8.21
+
+
 ﻿# [请注意：33号铺停止更新了！](http://yuguo.us/weblog/33pu-stop-update/),最主要的原因是根据[淘宝新规](http://club.alimama.com/read-htm-tid-4369390.html) #
 
 但是cuzy网站利用cuzy发布的WebSDK完善了数据采集的部分，使它继续使用，并正式改名为66号铺
