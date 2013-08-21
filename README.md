@@ -1,4 +1,7 @@
 Last update 2013.8.21
+
+
+![alt tag](https://raw.github.com/TheIndex/66pu/master/pic/0.png)
 # 66号铺介绍 #
 66号铺是基于33号铺的代码和cuzysdk（购物导航sdk）的数据的一个导购系统。关于33号铺（33pu）的更多信息可以到https://github.com/yuguo/33pu 中查看。
 
