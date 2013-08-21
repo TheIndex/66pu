@@ -3,10 +3,12 @@
 但是cuzy网站利用cuzy发布的WebSDK完善了数据采集的部分，使它继续使用，并正式改名为66号铺
 
 # 66号铺介绍 #
-66号铺是一个简单好用的淘宝客瀑布流发布、管理系统。demo：[66号铺](http://66pu.net)
+66号铺是一个简单好用的淘宝客瀑布流发布、管理系统。
+
+demo：[66号铺](http://66pu.net)
 
 ## 联系 ##
-遇到问题先看[wiki](http://cuzy2.com/index/show_download_66pu)，再更新到最新版看看问题有无解决，如果还有问题请加QQ群。大家有解决过的问题也可以编辑wiki页，活跃用户提升权限。
+遇到问题先看[wiki](http://cuzy.com/index/show_download_66pu)，再更新到最新版看看问题有无解决，如果还有问题请加QQ群。大家有解决过的问题也可以编辑wiki页，活跃用户提升权限。
 
 代码还在不断完善中，有任何意见和建议：
 
@@ -15,8 +17,14 @@
 - 新浪微博：[http://weibo.com/cuzysdk?from=profile&wvr=5&loc=infdomain]
 
 ## 下载 ##
+
 33pu https://github.com/yuguo/33pu
-66pu https://github.com/Jnnnh/66pu 或者 http://cuzy2.com/index/show_download_66pu
+
+66pu https://github.com/Jnnnh/66pu 
+
+或者 
+
+http://cuzy.com/index/show_download_66pu
 
 或者下载最新的ZIP
 
