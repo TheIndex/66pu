@@ -1,12 +1,11 @@
 Last update 2013.8.21
-
-
-﻿# [请注意：33号铺停止更新了！](http://yuguo.us/weblog/33pu-stop-update/),最主要的原因是根据[淘宝新规](http://club.alimama.com/read-htm-tid-4369390.html) #
-
-但是cuzy网站利用cuzy发布的WebSDK完善了数据采集的部分，使它继续使用，并正式改名为66号铺
-
 # 66号铺介绍 #
-66号铺是一个简单好用的淘宝客瀑布流发布、管理系统。
+66号铺是基于33号铺的代码和cuzysdk（购物导航sdk）的数据的一个导购系统。关于33号铺（33pu）的更多信息可以到https://github.com/yuguo/33pu 中查看。
+
+
+33号铺由于淘宝的政策原因停止更新
+
+但是cuzy网站利用cuzy发布的WebSDK完善了数据采集的部分，使它继续使用，并正式改名为66号铺，在这里感谢33pu的创建者yuguo
 
 demo：[66号铺](http://66pu.net)
 
@@ -23,7 +22,7 @@ demo：[66号铺](http://66pu.net)
 
 33pu https://github.com/yuguo/33pu
 
-66pu https://github.com/Jnnnh/66pu 
+66pu https://github.com/TheIndex/66pu 
 
 或者 
 
