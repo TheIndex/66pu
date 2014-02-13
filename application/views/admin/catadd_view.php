@@ -2,21 +2,20 @@
 
 //如果是一个列表，那么列出所有的子项来checkbox
 
-if(!empty($resp)){
+if(!empty($data)){
 	echo '<div style="padding:20px;">';
 	echo '<ul class="unstyled">';
-	foreach($resp->getData() as $item_cat){
+	foreach($data as $item_cat){
 		?>
 			<li>
-                <input type="checkbox" value="<?php echo $item_cat->cid ?>">
+                <input type="checkbox" value="<?php echo $item_cat['cid'] ?>">
 
 				<?php
-//				var_dump($item_cat);
-				if($item_cat -> is_parent == '1' && $item_cat->parent_cid == "0")
+				if($item_cat['is_parent'] == '1' && $item_catx['parent_cid'] == "0")
 				{
-					 echo '<a href="'.site_url('admin/catadd').'/'.$item_cat->cid.'">'.$item_cat->name.'</a>';
+					 echo '<a href="'.site_url('admin/catadd').'/'.$item_cat['cid'].'">'.$item_cat['name'].'</a>';
 				}else{
-					echo '<span>'.$item_cat->name.'</span>';
+					echo '<span>'.$item_cat['name'].'</span>';
 				}
 				?>
              </li>

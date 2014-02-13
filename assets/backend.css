@@ -57,3 +57,37 @@ body {padding-top:40px;}
 /* 条目检索页 */
 #page-items {width:1200px;margin:20px auto;}
 #page-items table img {height:80px;width:80px;}
+
+.pagenav_wrapper {
+    text-align: center;
+}
+.pagenav {
+    background-color: #EAEAEC;
+    border-radius: 5px;
+    box-shadow: 0 2px 1px 0 #BBBBBB inset, 0 1px 1px 0 #FFFFFF;
+    clear: both;
+    display: inline-block;
+    height: 24px;
+    padding: 5px 0;
+    text-align: center;
+}
+.pagenav a, .pagenav strong {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #FCFCFC;
+    border-radius: 3px;
+    box-shadow: 0 2px 3px 0 #CCCCCC;
+    display: inline-block;
+    font-weight: bold;
+    height: 22px;
+    line-height: 22px;
+    margin: 0 2px;
+    padding: 0 8px;
+    text-align: center;
+    text-decoration: none;
+}
+.pagenav a {
+    color: #666666;
+}
+.pagenav strong {
+    color: #53B348;
+}

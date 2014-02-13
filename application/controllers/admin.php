@@ -45,21 +45,50 @@ class Admin extends CI_Controller {
 	 * 搜索结果页
 	 *
 	 */
-	public function search(){
-        $this->load->model('M_webtaobao');
-        $data['cat'] = $this->M_cat->get_all_cat();
+	public function search($keyword, $page){
+		$this->load->model('M_webtaobao');
+		$this->load->library('pagination');
+		$data['cat'] = $this->M_cat->get_all_cat();
+		$select_id = trim($this->input->get('select_id', TRUE),"'\"");
+		
+		//获取搜索关键词
+		!$keyword && $keyword = trim($this->input->get('keyword', TRUE),"'\"");
+		$keyword = urldecode($keyword);
 
-         //获取搜索关键词
-        $keyword = trim($this->input->get('keyword', TRUE),"'\"");
-
-        /* cid是类别id */
-        $cid = '0';
-		$resp=$this->M_webtaobao->searchItem($keyword, $cid);
-
+		/* cid是类别id */
+		$cid = '0';
+		$limit = 20;
+		
+		$condition['page'] = $page;
+		$condition['prepage'] = $limit;
+		
+		$resp=$this->M_webtaobao->searchItem($keyword, $cid, $condition);
 		$resp->total_results = $resp->getCount();
-        $data['resp'] = $resp;
-        $data['keyword'] =  $keyword;
-//		var_dump($data['resp']->count);die;
+
+		$config['base_url'] = site_url("/admin/search/{$keyword}");
+		//site_url可以防止换域名代码错误。
+		
+		$config['total_rows'] = min($resp->total_results, 400);
+		//这是模型里面的方法，获得总数。
+		$config['use_page_numbers'] = TRUE;
+		$config['per_page']         = $limit;
+		$config['first_link']       = '首页';
+		$config['last_link']        = '尾页';
+		$config['next_link'] = '下一页 >';
+		$config['prev_link'] = '< 上一页';
+		$config['num_links']        = 4;
+		$config['uri_segment'] = 4;
+		//上面是自定义文字以及左右的连接数
+
+		$this->pagination->initialize($config);
+		//初始化配置
+
+		$data['pagination'] = $this->pagination->create_links();
+
+		$data['data'] = $resp->getData();
+		
+		$data['keyword'] =  $keyword;
+		$data['select_id'] =  $select_id;
 		$this->load->view('admin/include_header');
 		$this->load->view('admin/search_view',$data);
 	}
@@ -171,10 +200,11 @@ class Admin extends CI_Controller {
      */
 	public function catadd($parentid = '0'){
         $this->load->model('M_webtaobao');
-        $data['resp'] = $this->M_webtaobao->getCats($parentid);
+        $resp = $this->M_webtaobao->getCats($parentid);
 
+		$render_data = array('data'=>$resp->getData());
 		$this->load->view('admin/include_header');
-		$this->load->view('admin/catadd_view',$data);
+		$this->load->view('admin/catadd_view', $render_data);
 	}
 
 	public function catupdate_op(){

@@ -50,7 +50,8 @@ class RequestCheckUtil
 
 		if(self::checkEmpty($value))
 			return ;
-
+		if(self::checkEmpty($maxValue))
+			return;
 		self::checkNumeric($value,$fieldName);
 
 		if($value > $maxValue){
@@ -63,7 +64,7 @@ class RequestCheckUtil
 	 *
 	 **/
 	public static function checkMinValue($value,$minValue,$fieldName) {
-		
+
 		if(self::checkEmpty($value))
 			return ;
 

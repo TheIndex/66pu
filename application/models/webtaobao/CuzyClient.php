@@ -2,20 +2,37 @@
 class CuzyClient
 {
 	public $appkey;
-
 	public $appsecret;
 
 	public $debug = 1;
-	public $gatewayUrl = "www.cuzy.com/webapi/";
+	public $cache = false;
+	public $webFrom = 'cuzySDK';
+	public $gatewayUrl = "http://www.cuzy.com/webapi/";
 
 	/** 是否打开入参check**/
 	public $checkRequest = true;
-
 	protected $signMethod = "md5";
+	protected $apiVersion = "1";
+	protected $sdkVersion = "cuzy-sdk-php-2013-10-25";
+	private $baseDir;
 
-	protected $apiVersion = "3.0";
+	public function __construct() {
+		$this->baseDir = dirname(__FILE__) . "/";
+		spl_autoload_register(array($this, "autoLoader"));
+	}
+	protected function autoLoader($name) {
+		$file = $this->baseDir.'/'.$name . ".php";
+		if(is_file($file))
+			require_once($file);
+	}
+	public function jump($urlstr) {
+		$req_url = dirname($this->gatewayUrl)."?g=stat&m=stat&a=jump_html"."&url=".$urlstr;
+		$resp    = $this->curl($req_url);
 
-	protected $sdkVersion = "cuzy-sdk-php-2013-08-15";
+		$jumpArray  = json_decode($resp, TRUE);
+		return $jumpArray;
+
+	}
 
 	protected function generateSign($params)
 	{
@@ -35,86 +52,28 @@ class CuzyClient
 		return strtoupper(md5($stringToBeSigned));
 	}
 
-	public function curl($url, $postFields = null)
-	{
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_FAILONERROR, false);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//		https 请求
-		if(strlen($url) > 5 && strtolower(substr($url,0,5)) == "https" ) {
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+	public function curl($url, $postFields = null) {
+		$paramsArr = array();
+		if($postFields) {
+			$paramStr = http_build_query($postFields);
+			$url = $url.'?'.$paramStr;
 		}
+		$reponse = file_get_contents($url);
 
-		if (is_array($postFields) && 0 < count($postFields))
-		{
-			$postBodyString = "";
-			$postMultipart = false;
-			foreach ($postFields as $k => $v)
-			{
-				if("@" != substr($v, 0, 1))//判断是不是文件上传
-				{
-					$postBodyString .= "$k=" . urlencode($v) . "&"; 
-				}
-				else//文件上传用multipart/form-data，否则用www-form-urlencoded
-				{
-					$postMultipart = true;
-				}
-			};
-			unset($k, $v);
-//			var_dump($url."/".substr($postBodyString,0,-1));die;
-			curl_setopt($ch, CURLOPT_POST, true);
-			if ($postMultipart)
-			{
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
-			}
-			else
-			{
-				curl_setopt($ch, CURLOPT_POSTFIELDS, substr($postBodyString,0,-1));
-			}
-		}
-		$reponse = curl_exec($ch);
-		
-		if (curl_errno($ch))
-		{
-			throw new Exception(curl_error($ch),0);
-		}
-		else
-		{
-			$httpStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			if (200 !== $httpStatusCode)
-			{
-				throw new Exception($reponse,$httpStatusCode);
-			}
-		}
-		curl_close($ch);
 		return $reponse;
 	}
 
 	protected function logCommunicationError($apiName, $requestUrl, $errorCode, $responseTxt)
 	{
-//		$localIp = isset($_SERVER["SERVER_ADDR"]) ? $_SERVER["SERVER_ADDR"] : "CLI";
-//		$logger = new LtLogger;
-//		$logger->conf["log_file"] = rtrim(TOP_SDK_WORK_DIR, '\\/') . '/' . "logs/top_comm_err_" . $this->appkey . "_" . date("Y-m-d") . ".log";
-//		$logger->conf["separator"] = "^_^";
-//		$logData = array(
-//		date("Y-m-d H:i:s"),
-//		$apiName,
-//		$this->appkey,
-//		$localIp,
-//		PHP_OS,
-//		$this->sdkVersion,
-//		$requestUrl,
-//		$errorCode,
-//		str_replace("\n","",$responseTxt)
-//		);
-//		$logger->log($logData);
 	}
 	public function advExecute($request,$session=null){
 		$apiName = get_class($request);
 		$resp = $this->execute($request,$session);
-		return new Format($resp,$apiName);
+		/* if($apiName == 'GetGrouponBySearch') {
+			return $resp;
+		} */
+		$formatData = new Format($resp,$apiName);
+		return $formatData;
 	}
 	public function execute($request, $session = null)
 	{
@@ -122,37 +81,19 @@ class CuzyClient
 			try {
 				$request->check();
 			} catch (Exception $e) {
-				$result = new stdClass();
-				$result->code = $e->getCode();
-				$result->msg = $e->getMessage();
+				$result = array();
+				$result['code'] = $e->getCode();
+				$result['msg'] = $e->getMessage();
 				return $result;
 			}
 		}
-		//组装系统参数
 		$sysParams = array();
-//		$sysParams["appkey"] = $this->appkey;
-//		$sysParams["appsecret"] = $this->appsecret;
-//		$sysParams["debug"] = $this->debug;
-//		$sysParams["v"] = $this->apiVersion;
-////		$sysParams["format"] = $this->format;
-//		$sysParams["sign_method"] = $this->signMethod;
-//		$sysParams["method"] = $request->getApiMethodName();
-//		$sysParams["timestamp"] = date("Y-m-d H:i:s");
-//		$sysParams["partner_id"] = $this->sdkVersion;
-//		if (null != $session)
-//		{
-//			$sysParams["session"] = $session;
-//		}
-
-		//获取业务参数
+		//获取参数
 		$apiParams = $request->getApiParas();
 		$apiParams["appkey"] = $this->appkey;
 		$apiParams["appsecret"] = $this->appsecret;
 		$apiParams["debug"] = $this->debug;
-
-
-		//签名
-//		$sysParams["sign"] = $this->generateSign(array_merge($apiParams, $sysParams));
+		$apiParams["webfrom"] = $this->webFrom;
 
 		//系统参数放入GET请求串
 		$requestUrl = $this->gatewayUrl .$request->getApiMethodName()."/";
@@ -162,58 +103,56 @@ class CuzyClient
 			$requestUrl .= "$sysParamKey/" . urlencode($sysParamValue) . "/";
 		}
 		$requestUrl = substr($requestUrl, 0, -1);
-//		var_dump($apiParams);
-//		var_dump($requestUrl);die;
 		//发起HTTP请求
 		try
 		{
-			$resp = $this->curl($requestUrl,  $apiParams);
+			if($this->cache) {
+				$cache = new Cache();
+				$resp = $cache->getHttpCache($apiParams);
+			}
+			if(empty($resp)) {
+				$resp = $this->curl($requestUrl,  $apiParams);
+			} else {
+				$readCacheFlag = 1;
+			}
 		}
 		catch (Exception $e)
 		{
 			$this->logCommunicationError($request->getApiMethodName(),$requestUrl,"HTTP_ERROR_" . $e->getCode(),$e->getMessage());
-			$result = new stdClass();
-			$result->code = $e->getCode();
-			$result->msg = $e->getMessage();
+			$result = array();
+			$result['code'] = $e->getCode();
+			$result['msg'] = $e->getMessage();
 			return $result;
 		}
 
 		//解析TOP返回结果
 		$respWellFormed = false;
-		$respObject = json_decode($resp);
-//		var_dump($respObject);die;
-			if (null !== $respObject)
-			{
-				$respWellFormed = true;
-//				foreach ($respObject as $propKey => $propValue)
-//				{
-//					$respObject = $propValue;
-//				}
-			}
-
+		$respObject = json_decode($resp, true);
+		if (null !== $respObject)
+		{
+			$respWellFormed = true;
+		}
 
 		//返回的HTTP文本不是标准JSON或者XML，记下错误日志
 		if (false === $respWellFormed)
 		{
 			$this->logCommunicationError($sysParams["method"],$requestUrl,"HTTP_RESPONSE_NOT_WELL_FORMED",$resp);
-			$result= new stdClass();
-			$result->code = 0;
-			$result->msg = "HTTP_RESPONSE_NOT_WELL_FORMED";
+			$result= array();
+			$result['code'] = 0;
+			$result['msg'] = "HTTP_RESPONSE_NOT_WELL_FORMED";
 			return $result;
 		}
 
 		//如果TOP返回了错误码，记录到业务错误日志中
-		if (isset($respObject->code) && $respObject->code >0)
+		if (isset($respObject['error_response']['code']) && $respObject['error_response']['code'] != 0)
 		{
-			$logger = new LtLogger;
-			$logger->conf["log_file"] = rtrim(CUZY_SDK_WORK_DIR, '\\/') . '/' . "logs/top_biz_err_" . $this->appkey . "_" . date("Y-m-d") . ".log";
-			$logger->log(array(
-				date("Y-m-d H:i:s"),
-				$resp
-			));
-
-			unset($respObject->data);
-			unset($respObject->expection);
+			unset($respObject['data']);
+			unset($respObject['expection']);
+		} else {
+			if($this->cache && $readCacheFlag == 0) {
+				$cache = new Cache();
+				$cache->setHttpCache($apiParams, $resp);
+			}
 		}
 
 		return $respObject;
@@ -249,16 +188,8 @@ class CuzyClient
 		}
 		return $this->execute($req, $session);
 	}
-	public function get_sdk_path($name){
-		$dirname = dirname(__FILE__);
-		if($name == "base"){
-			return $dirname;
-		}elseif($name == "request"){
-			return  $dirname."/request/";
-		}
-	}
 	public function load_api($api_name){
-		include $this->get_sdk_path("request").$api_name.".php";
+		include_once $this->baseDir . "request/".$api_name.".php";
 		return new $api_name;
 	}
 }

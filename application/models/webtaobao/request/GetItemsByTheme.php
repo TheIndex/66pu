@@ -8,8 +8,28 @@
  */
 
 class GetItemsByTheme {
-		private $themeId;
-		private $picSize;
+	private $themeId;
+	private $picSize;
+	private $redirectUrl;
+
+	/**
+	 * @param mixed $redirctUrl
+	 */
+	public function setRedirectByWebRoot($webRoot) {
+		$dirname = dirname(dirname(__FILE__));
+		$dirname = substr($dirname, strlen($webRoot)+1);
+		$dirname = str_replace('\\', '/', $dirname);
+		$redirectUrl = '/'. $dirname. '/Debug/tao.php';
+		$redirectUrl = str_replace('//', '/', $redirectUrl);
+		$this->setRedirectUrl($redirectUrl);
+	}
+	/**
+	 * @return mixed
+	 */
+	public function setRedirectUrl($redirectUrl) {
+		$this->redirectUrl = $redirectUrl;
+		$this->apiParas["redirect_url"] = $redirectUrl;
+	}
 
 	/**
 	 * @param mixed $picSize

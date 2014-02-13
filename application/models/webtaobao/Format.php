@@ -16,43 +16,45 @@ class Format {
 	}
 
 	public function getErrorResponse(){
-		return $this->response->error_response;
+		return $this->response['error_response'];
 	}
 
 	public function __call($name,$arg){
 		if(strtolower(substr($name,0,3)) == "get"){
 			$str = substr($name,3);
-			if($this->getErrorResponse()->code ==0){
+			$error_response = $this->getErrorResponse();
+			if($error_response['code'] == 0){
 				$apiName = $this->apiName .$str;
 				if(method_exists($this,$apiName)){
-
 					return $this->$apiName($this->response);
 				}else{
-					return new stdClass();
+					return array();
 				}
 			}else{
-				return $this->getErrorResponse();
+				if($str == 'Data')
+					return array();
+				elseif($str == 'Count')
+					return 0;
+				return $error_response();
 			}
 		}
 	}
 	public function GetItemcatsByCidData(){
-		return $this->response->itemcats_get_response->item_cats->item_cat;
+		return $this->response['itemcats_get_response']['item_cats']['item_cat'];
 	}
 
 	public function GetItemsBySearchData(){
-
-		return $this->response->cuzy_items_get_response->cuzy_items->item;
+		return $this->response['cuzy_items_get_response']['cuzy_items']['item'];
 	}
 
 	public function GetItemsBySearchCount(){
-
-		return $this->response->cuzy_items_get_response->cuzy_items->count;
+		return intval($this->response['cuzy_items_get_response']['cuzy_items']['count']);
 	}
 
 	public function GetItemsByThemeData(){
-		return $this->response->cuzy_items_get_response->cuzy_items->item;
+		return $this->response['cuzy_items_get_response']['cuzy_items']['item'];
 	}
 	public function GetItemByThemeCount(){
-		return $this->response->cuzy_items_get_response_cuzy_items->count;
+		return intval($this->response['cuzy_items_get_response_cuzy_items']['count']);
 	}
 } 

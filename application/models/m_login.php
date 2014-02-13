@@ -39,6 +39,7 @@ class M_login extends CI_Model{
 			'click_count' => array(
 				 'type' => 'INT',
 				 'constraint' => '128',
+				  'null'=>true,
 		  ),
 			'click_url' => array(
 				 'type' => 'VARCHAR',
@@ -54,6 +55,7 @@ class M_login extends CI_Model{
 			'sellernick' => array(
 				 'type' => 'VARCHAR',
 				 'constraint' => '128',
+				  'null'=>true,
 		  ),
 			'num_iid' => array(
 				 'type' => 'VARCHAR',

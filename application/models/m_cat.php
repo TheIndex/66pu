@@ -19,10 +19,10 @@ class M_cat extends CI_Model{
         $data_decode = json_decode($_POST['data']);
         foreach($data_decode as $cat){
             $data = array(
-                           'cat_id' => $cat -> id ,
-                           'cat_name' =>$cat -> name,
-                           'cat_slug' =>$cat -> name
-                        );
+                'cat_id' => $cat -> id ,
+                'cat_name' =>$cat -> name,
+                'cat_slug' =>$cat -> id 
+			);
             $this->db->insert($this->cat_table, $data);
         }
     }

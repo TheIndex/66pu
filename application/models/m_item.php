@@ -21,7 +21,8 @@ class M_item extends CI_Model{
                'cid' => $_POST['cid'],
                'click_url' =>  $_POST['click_url'],
                'price' => $_POST['price'],
-//               'sellernick' => $_POST['sellernick'],
+               'click_count' => 0,
+               'sellernick' => strval($_POST['sellernick']),
                'num_iid' => $_POST['num_iid']
             );
 		return $this->db->insert('item', $data);
@@ -33,8 +34,6 @@ class M_item extends CI_Model{
             );
 
 		$this->db->delete('item', $data);
-//		var_dump($this->db->last_query());
-//		var_dump(get_class_methods($this->db));
 		echo '1';
 	}
 
