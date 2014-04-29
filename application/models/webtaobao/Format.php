@@ -54,7 +54,11 @@ class Format {
 	public function GetItemsByThemeData(){
 		return $this->response['cuzy_items_get_response']['cuzy_items']['item'];
 	}
-	public function GetItemByThemeCount(){
-		return intval($this->response['cuzy_items_get_response_cuzy_items']['count']);
+	public function GetItemsByThemeCount(){
+		$resp = $this->getErrorResponse();
+		if($resp["code"] !=0){
+			return 0;
+		};
+		return intval($this->response['cuzy_items_get_response']['cuzy_items']['count']);
 	}
 } 

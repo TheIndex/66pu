@@ -9,6 +9,7 @@ class Home extends CI_Controller {
 		$this->load->model('M_keyword');
 		$this->load->library('pagination');
 		$this->load->model('M_cat');
+		$this->load->model('M_theme');
 	}
 
 	/**
@@ -57,7 +58,7 @@ class Home extends CI_Controller {
 
 		//类别
 		$data['cat'] = $this->M_cat->get_all_cat();
-
+		$data['theme']=$this->M_theme->get_all_theme();
 		//条目数据
 		$data['items'] = $this->M_item->get_all_item($limit, ($page - 1) * $limit);
 

@@ -64,4 +64,16 @@ class M_webtaobao extends CI_Model {
 		return $resp;
 	}
 
+	function getItemByTheme($page,$perpage,$themeid){
+		$cuzyClient = $this->cuzyClient;
+		$cuzyThemeData      = $cuzyClient->load_api("GetItemsByTheme");
+		$cuzyThemeData->setRedirectByWebRoot(dirname(BASEPATH));
+		$cuzyThemeData->setPage($page);
+		$cuzyThemeData->setPerpage($perpage);
+		$cuzyThemeData->setPicSize("230x230");
+		$cuzyThemeData->setThemeId($themeid);
+		$resp = $cuzyClient->advExecute($cuzyThemeData);
+		return $resp;
+	}
+
 }

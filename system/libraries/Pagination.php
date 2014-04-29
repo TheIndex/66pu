@@ -122,7 +122,6 @@ class CI_Pagination {
 
 		// Calculate the total number of pages
 		$num_pages = ceil($this->total_rows / $this->per_page);
-
 		// Is there only one page? Hm... nothing more to do here then.
 		if ($num_pages == 1)
 		{
@@ -254,7 +253,6 @@ class CI_Pagination {
 			}
 
 		}
-
 		// Render the pages
 		if ($this->display_pages !== FALSE)
 		{
@@ -279,7 +277,6 @@ class CI_Pagination {
 					else
 					{
 						$n = ($i == $base_page) ? '' : $i;
-
 						if ($n == '' && $this->first_url != '')
 						{
 							$output .= $this->num_tag_open.'<a '.$this->anchor_class.'href="'.$this->first_url.'">'.$loop.'</a>'.$this->num_tag_close;
@@ -287,7 +284,6 @@ class CI_Pagination {
 						else
 						{
 							$n = ($n == '') ? '' : $this->prefix.$n.$this->suffix;
-
 							$output .= $this->num_tag_open.'<a '.$this->anchor_class.'href="'.$this->base_url.$n.'">'.$loop.'</a>'.$this->num_tag_close;
 						}
 					}

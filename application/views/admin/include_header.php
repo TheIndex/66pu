@@ -21,6 +21,9 @@
               <li class="">
                 <a href="<?php echo site_url('admin/cat')?>">类别</a>
               </li>
+	            <li class="">
+               <a href="<?php echo site_url('admin/theme')?>">主题</a>
+             </li>
               <li class="">
                 <a href="<?php echo site_url('admin/keyword')?>">关键词</a>
               </li>

@@ -7,7 +7,7 @@
 		echo $cat_name.' - ';
 	}
 	 echo $site_name;
-	 ?></title>
+	 ?>-简单好用的淘宝购物平台</title>
 	<meta name="keywords" content="<?php 
 	if(!empty($cat_name)){
 		echo $cat_name.',';
@@ -64,6 +64,15 @@
 							}
 						   echo '<li class="'.$is_current.'"><a href="'.site_url('cat/'.rawurlencode($row->cat_slug)).'">'.$row->cat_name.'</a></li>';
 						}
+
+					foreach ($theme->result() as $row) {
+						$is_current = '';
+						if(! empty($theme_slug) && $row->theme_slug == $theme_slug) {
+							$is_current = 'current-menu-item';
+						}
+						echo '<li class="' . $is_current . '"><a href="' . site_url('theme/' . rawurlencode($row->theme_slug)) .
+							'">' . $row->theme_name . '</a></li>';
+					}
 					 ?>
 				</ul>
 			</div>
@@ -105,8 +114,8 @@
 <?php require 'footer.php';?>
 
 <script type="text/javascript">
-//PUT YOUR Baidu or Google analytics code
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F00d848cbadb644734d1bb811fc3de4b1' type='text/javascript'%3E%3C/script%3E"));
 </script>
-
 </body>
 </html>

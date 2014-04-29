@@ -85,6 +85,7 @@ class GetItemsByTheme {
 	 */
 	public function setPage($page) {
 		$this->page = $page;
+		$this->apiParas["page"]=$page;
 	}
 
 	/**
