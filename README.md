@@ -1,4 +1,6 @@
-Last update 2014.2.13
+Last update 2014.4.29
+1. 新增对cuzy 主题的支持
+=============================
 
 
 ![alt tag](https://raw.github.com/TheIndex/66pu/master/pic/1.png)
